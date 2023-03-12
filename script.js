@@ -1,4 +1,6 @@
-let myLibrary = [];
+let myLibrary = [
+  { title: "The Hobbit", author: "J.R.R. Tolkien", pages: 295, read: true },
+];
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -38,6 +40,8 @@ function addBookToLibrary(event) {
 }
 
 function printBook(book) {
+  let list = document.getElementById("list");
+
   let bookRow = document.createElement("div");
 
   let title = document.createElement("div");
@@ -51,11 +55,12 @@ function printBook(book) {
 
   let readCtn = document.createElement("div");
   let readBtn = document.createElement("button");
-  readBtn.textContent = "READ";
+  readBtn.textContent = book.read ? "READ" : "NOT READ";
   readBtn.classList.add("read-btn");
   readCtn.appendChild(readBtn);
 
   readBtn.addEventListener("click", () => {
+    book.read = !book.read;
     if (readBtn.textContent === "READ") {
       readBtn.textContent = "NOT READ";
     } else {
@@ -69,9 +74,9 @@ function printBook(book) {
   deleteCtn.appendChild(deleteBtn);
 
   deleteBtn.addEventListener("click", () => {
-    console.table(myLibrary);
-    myLibrary.splice(book, 1);
-    console.table(myLibrary);
+    let i = myLibrary.indexOf(book);
+    list.removeChild(list.children[i + 2]);
+    myLibrary.splice(i, 1);
   });
 
   bookRow.appendChild(title);
@@ -80,5 +85,13 @@ function printBook(book) {
   bookRow.appendChild(readCtn);
   bookRow.appendChild(deleteCtn);
 
-  document.getElementById("list").appendChild(bookRow);
+  list.appendChild(bookRow);
 }
+
+function printLibrary() {
+  for (const book of myLibrary) {
+    printBook(book);
+  }
+}
+
+printLibrary();
